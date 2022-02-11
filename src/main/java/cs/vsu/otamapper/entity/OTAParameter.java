@@ -16,9 +16,6 @@ public class OTAParameter {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "ota_type", nullable = false)
-    private String otaType;
-
     @Column(name = "value", nullable = false)
     private String value;
 
