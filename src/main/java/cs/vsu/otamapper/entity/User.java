@@ -3,6 +3,7 @@ package cs.vsu.otamapper.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -35,6 +36,9 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
     private Organization organization;
+
+    @OneToMany(mappedBy = "organization")
+    private List<Rule> rules;
 
     public User() {
 

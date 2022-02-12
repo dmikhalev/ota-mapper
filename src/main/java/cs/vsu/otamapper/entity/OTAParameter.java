@@ -22,6 +22,13 @@ public class OTAParameter {
     @Column(name = "code", nullable = false)
     private Integer code;
 
+    @Column(name = "additional_details", nullable = false)
+    private String additionalDetails;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rule_id", nullable = false)
+    private Rule rule;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dictionary_id", nullable = false)
     private OTADictionary otaDictionary;
