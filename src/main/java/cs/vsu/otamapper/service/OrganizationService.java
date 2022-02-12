@@ -13,6 +13,10 @@ public class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
+    public Organization findById(long id) {
+        return organizationRepository.findById(id).orElse(null);
+    }
+
     public Organization createOrUpdate(Organization organization) {
         return organizationRepository.save(organization);
     }
