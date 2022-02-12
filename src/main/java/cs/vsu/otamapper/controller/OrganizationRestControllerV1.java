@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping(value = "/api/v1")
-public class OrganizationController {
+public class OrganizationRestControllerV1 {
 
     private final OrganizationService organizationService;
 
     @Autowired
-    public OrganizationController(OrganizationService organizationService) {
+    public OrganizationRestControllerV1(OrganizationService organizationService) {
         this.organizationService = organizationService;
     }
 
@@ -35,10 +35,20 @@ public class OrganizationController {
 
     @PostMapping(value = "/admin/organization")
     public void createOrUpdateOrganization(@RequestBody OrganizationDto organizationDto) {
-        if (organizationDto != null) {
-            Organization organization = organizationDto.toOrganization();
-            organizationService.createOrUpdate(organization);
+        if (organizationDto == null) {
+            return;
         }
+        Organization organization;
+        if (organizationDto.getId() != null) {
+            organization = organizationService.findById(organizationDto.getId());
+            organization.setName(organizationDto.getName());
+            organization.setEmail(organizationDto.getEmail());
+            organization.setPhone(organizationDto.getPhone());
+        } else {
+            organization = organizationDto.toOrganization();
+        }
+        organizationService.createOrUpdate(organization);
+
     }
 
     @DeleteMapping(value = "/admin/organization")
