@@ -4,6 +4,8 @@ import cs.vsu.otamapper.entity.Rule;
 import cs.vsu.otamapper.repository.RuleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RuleService {
 
@@ -11,6 +13,17 @@ public class RuleService {
 
     public RuleService(RuleRepository ruleRepository) {
         this.ruleRepository = ruleRepository;
+    }
+
+    public Rule findById(long id) {
+        return ruleRepository.findById(id).orElse(null);
+    }
+
+    public List<Rule> findByParamNameAndOrganization(String paramName, String organization) {
+        if (paramName == null || organization == null) {
+            return null;
+        }
+        return ruleRepository.findByParamNameAndOrganization(paramName, organization);
     }
 
     public Rule createOrUpdate(Rule rule) {

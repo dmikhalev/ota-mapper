@@ -36,4 +36,12 @@ public class Rule {
 
     public Rule() {
     }
+
+    public Rule(Long id, String regExp, String paramName, Integer code, Integer priority) {
+        this.id = id;
+        this.regExp = regExp;
+        this.paramName = paramName;
+        this.code = code;
+        this.priority = priority;
+    }
 }
