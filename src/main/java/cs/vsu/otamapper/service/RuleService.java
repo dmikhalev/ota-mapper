@@ -26,6 +26,13 @@ public class RuleService {
         return ruleRepository.findByParamNameAndOrganization(paramName, organization);
     }
 
+    public List<Rule> findByNameAndOrganization(String name, String organization) {
+        if (name == null || organization == null) {
+            return null;
+        }
+        return ruleRepository.findByNameAndOrganization(name, organization);
+    }
+
     public Rule createOrUpdate(Rule rule) {
         return ruleRepository.save(rule);
     }
