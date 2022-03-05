@@ -8,6 +8,8 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RuleDto {
     private Long id;
+    private String name;
+    private String otaType;
     private String regExp;
     private String paramName;
     private Integer code;
@@ -16,8 +18,10 @@ public class RuleDto {
     public RuleDto() {
     }
 
-    public RuleDto(Long id, String regExp, String paramName, Integer code, Integer priority) {
+    public RuleDto(Long id, String name, String otaType, String regExp, String paramName, Integer code, Integer priority) {
         this.id = id;
+        this.name = name;
+        this.otaType = otaType;
         this.regExp = regExp;
         this.paramName = paramName;
         this.code = code;
@@ -25,10 +29,10 @@ public class RuleDto {
     }
 
     public Rule toORule() {
-        return new Rule(id, regExp, paramName, code, priority);
+        return new Rule(id, name, otaType, regExp, paramName, code, priority);
     }
 
     public static RuleDto fromRule(Rule r) {
-        return new RuleDto(r.getId(), r.getRegExp(), r.getParamName(), r.getCode(), r.getPriority());
+        return new RuleDto(r.getId(), r.getName(), r.getOtaType(), r.getRegExp(), r.getParamName(), r.getCode(), r.getPriority());
     }
 }

@@ -17,12 +17,9 @@ public class OTADictionary {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "ota_type", nullable = false)
-    private String otaType;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id", nullable = false)
-    private Organization organization;
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user;
 
     @OneToMany(mappedBy = "otaDictionary")
     private List<OTAParameter> otaParameters;

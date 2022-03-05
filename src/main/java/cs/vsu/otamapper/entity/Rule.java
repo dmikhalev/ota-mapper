@@ -14,6 +14,12 @@ public class Rule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "ota_type", nullable = false)
+    private String otaType;
+
     @Column(name = "reg_exp", nullable = false)
     private String regExp;
 
@@ -37,8 +43,10 @@ public class Rule {
     public Rule() {
     }
 
-    public Rule(Long id, String regExp, String paramName, Integer code, Integer priority) {
+    public Rule(Long id, String name, String otaType, String regExp, String paramName, Integer code, Integer priority) {
         this.id = id;
+        this.name = name;
+        this.otaType = otaType;
         this.regExp = regExp;
         this.paramName = paramName;
         this.code = code;

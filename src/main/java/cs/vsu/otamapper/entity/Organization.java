@@ -29,12 +29,10 @@ public class Organization {
     @OneToMany(mappedBy = "organization")
     private List<Rule> rules;
 
-    @OneToMany(mappedBy = "organization")
-    private List<OTADictionary> dictionaries;
-
     public Organization() {
 
     }
+    
     public Organization(Long id, String name, String phone, String email) {
         this.id = id;
         this.name = name;

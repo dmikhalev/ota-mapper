@@ -19,9 +19,6 @@ public class OTAParameter {
     @Column(name = "value", nullable = false)
     private String value;
 
-    @Column(name = "code", nullable = false)
-    private Integer code;
-
     @Column(name = "additional_details", nullable = false)
     private String additionalDetails;
 
