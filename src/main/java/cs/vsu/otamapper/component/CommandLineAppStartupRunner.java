@@ -25,14 +25,18 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         User admin = userRepository.findByUsername("admin").orElse(null);
         if (admin == null) {
             Role role = roleRepository.findByName("ROLE_ADMIN").orElse(null);
-            if (role != null) {
-                admin = new User();
-                admin.setUsername("admin");
-                admin.setPassword(passwordEncoder.encode("admin"));
-                admin.setRole(role);
-                admin.setName("admin");
-                userRepository.save(admin);
+            if (role == null) {
+                role = new Role();
+                role.setId(1L);
+                role.setName("ROLE_ADMIN");
+                roleRepository.save(role);
             }
+            admin = new User();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setRole(role);
+            admin.setName("admin");
+            userRepository.save(admin);
         }
     }
 }
