@@ -63,19 +63,19 @@ public class CsvMapper implements OTAMapper {
         String[] titles = headers.toLowerCase().split(separator);
         // equals
         for (int i = 0; i < titles.length; i++) {
-            if (paramName.equalsIgnoreCase(titles[i])) {
+            if (paramName.equalsIgnoreCase(titles[i].replace("\"", ""))) {
                 return i;
             }
         }
         // startsWith
         for (int i = 0; i < titles.length; i++) {
-            if (titles[i].startsWith(paramName.toLowerCase())) {
+            if (titles[i].replace("\"", "").startsWith(paramName.toLowerCase())) {
                 return i;
             }
         }
         // contains
         for (int i = 0; i < titles.length; i++) {
-            if (titles[i].contains(paramName.toLowerCase())) {
+            if (titles[i].replace("\"", "").contains(paramName.toLowerCase())) {
                 return i;
             }
         }
