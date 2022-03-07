@@ -13,7 +13,8 @@ public class Keyword implements RegExpTerm {
 
     @Override
     public boolean execute(String paramValue) {
-        return paramValue.contains(value.replace("'", ""));
+        return paramValue.toLowerCase().contains(
+                value.replace("'", "").toLowerCase());
     }
 
     @Override

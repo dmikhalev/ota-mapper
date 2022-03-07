@@ -44,10 +44,12 @@ public class TestRegExpParser {
             put("IF ('Executive' OR 'Club') AND 'Room' THEN 10",
                     "or and 'executive' 'room' and 'club' 'room' -> 10");
 
-
             put("IF ('Executive' OR 'Club') AND ('Room' OR 'King') THEN 11",
                     // "or or or and 'executive' 'room' and 'executive' 'king' and 'club' 'room' and 'club' 'king' -> 11");
                     "or or and 'executive' 'room' or and 'executive' 'king' and 'club' 'room' and 'club' 'king' -> 11");
+
+            put("IF ((('Executive') OR ((('Club')))) AND 'Room') THEN 12",
+                    "or and 'executive' 'room' and 'club' 'room' -> 12");
         }};
 
         for (Map.Entry<String, String> pair : regExpToResult.entrySet()) {

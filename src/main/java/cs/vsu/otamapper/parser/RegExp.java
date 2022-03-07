@@ -12,4 +12,11 @@ public class RegExp {
         this.parentTerm = parentTerm;
         this.code = code;
     }
+
+    public boolean execute(String paramValue) {
+        if (parentTerm != null) {
+            return parentTerm.execute(paramValue);
+        }
+        return false;
+    }
 }
