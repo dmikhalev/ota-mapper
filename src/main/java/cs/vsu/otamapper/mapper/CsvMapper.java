@@ -9,7 +9,7 @@ import java.util.*;
 
 public class CsvMapper implements OTAMapper {
 
-    public static String CSV_SEPARATOR = ",";
+    public static final String CSV_SEPARATOR = ",";
 
     @Autowired
     private RuleService ruleService;

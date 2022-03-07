@@ -2,6 +2,8 @@ package cs.vsu.otamapper.controller;
 
 import cs.vsu.otamapper.dto.AuthenticationRequestDto;
 import cs.vsu.otamapper.entity.User;
+import cs.vsu.otamapper.parser.Parser;
+import cs.vsu.otamapper.parser.RegExp;
 import cs.vsu.otamapper.security.jwt.JwtTokenProvider;
 import cs.vsu.otamapper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,9 @@ public class AuthenticationRestController {
 
     @PostMapping("login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
-        try {
+        RegExp regExp = Parser.parseRegExp("IF ('Executive' OR 'Club') AND ('Room' OR 'King') THEN 11");
+        System.out.println(regExp);
+       try {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             User user = userService.findByUsername(username);
