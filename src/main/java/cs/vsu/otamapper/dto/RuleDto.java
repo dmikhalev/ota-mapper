@@ -28,7 +28,7 @@ public class RuleDto {
         this.priority = priority;
     }
 
-    public Rule toORule() {
+    public Rule toRule() {
         return new Rule(id, name, otaType, regExp, paramName, code, priority);
     }
 

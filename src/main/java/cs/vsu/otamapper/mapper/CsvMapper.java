@@ -3,7 +3,6 @@ package cs.vsu.otamapper.mapper;
 import cs.vsu.otamapper.entity.Rule;
 import cs.vsu.otamapper.entity.User;
 import cs.vsu.otamapper.service.RuleService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
@@ -11,13 +10,12 @@ public class CsvMapper implements OTAMapper {
 
     public static final String CSV_SEPARATOR = ",";
 
-    @Autowired
     private RuleService ruleService;
-
     private User user;
     private String paramName;
 
-    public CsvMapper(User user, String paramName) {
+    public CsvMapper(RuleService ruleService, User user, String paramName) {
+        this.ruleService = ruleService;
         this.user = user;
         this.paramName = paramName;
     }
@@ -64,6 +62,12 @@ public class CsvMapper implements OTAMapper {
         // equals
         for (int i = 0; i < titles.length; i++) {
             if (paramName.equalsIgnoreCase(titles[i].replace("\"", ""))) {
+                return i;
+            }
+        }
+        // + name
+        for (int i = 0; i < titles.length; i++) {
+            if (titles[i].replace("\"", "").equalsIgnoreCase(paramName + "name")) {
                 return i;
             }
         }

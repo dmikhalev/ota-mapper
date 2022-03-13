@@ -4,15 +4,12 @@ import cs.vsu.otamapper.dto.IdDto;
 import cs.vsu.otamapper.dto.UserDto;
 import cs.vsu.otamapper.entity.Role;
 import cs.vsu.otamapper.entity.User;
-import cs.vsu.otamapper.security.jwt.JwtUser;
 import cs.vsu.otamapper.service.RoleService;
 import cs.vsu.otamapper.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +68,7 @@ public class UserRestControllerV1 {
                 user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             }
         } else {
-            User admin = findAuthorizedUser();
+            User admin = userService.findAuthorizedUser();
             if (admin == null) {
                 return;
             }
@@ -86,17 +83,5 @@ public class UserRestControllerV1 {
     @DeleteMapping(value = "/admin/user")
     public void deleteUser(@RequestBody IdDto id) {
         userService.delete(id.getId());
-    }
-
-    private User findAuthorizedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            log.error("Authorized user not found.");
-            return null;
-        }
-        if (auth.getPrincipal() instanceof JwtUser) {
-            return userService.findById(((JwtUser) auth.getPrincipal()).getId());
-        }
-        return null;
     }
 }
