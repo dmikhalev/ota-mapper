@@ -16,13 +16,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
     private static final String ORGANIZATION_ENDPOINT = "/api/v1/organization";
     private static final String USER_ENDPOINT = "/api/v1/user";
+    private static final String RULE_ENDPOINT = "/api/v1/rule";
     private static final String MAP_ENDPOINT = "/api/v1/map";
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -46,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(ORGANIZATION_ENDPOINT).hasAnyRole()
                 .antMatchers(USER_ENDPOINT).hasAnyRole()
+                .antMatchers(RULE_ENDPOINT).hasAnyRole()
                 .antMatchers(MAP_ENDPOINT).hasAnyRole()
                 .anyRequest().authenticated()
                 .and()
