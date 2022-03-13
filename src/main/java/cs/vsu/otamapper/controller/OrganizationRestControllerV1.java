@@ -42,17 +42,13 @@ public class OrganizationRestControllerV1 {
         if (organizationDto == null) {
             return;
         }
-        Organization organization;
+        Organization organization = organizationDto.toOrganization();
         if (organizationDto.getId() != null) {
-            organization = organizationService.findById(organizationDto.getId());
-            organization.setName(organizationDto.getName());
-            organization.setEmail(organizationDto.getEmail());
-            organization.setPhone(organizationDto.getPhone());
-        } else {
-            organization = organizationDto.toOrganization();
+            organization.setId(organizationDto.getId());
         }
-        organizationService.createOrUpdate(organization);
         User user = userService.findAuthorizedUser();
+        organization.getUsers().add(user);
+        organizationService.createOrUpdate(organization);
         if (user != null) {
             user.setOrganization(organization);
             userService.createOrUpdate(user);
