@@ -42,7 +42,7 @@ public class RoomTypeMapperRestControllerV1 {
         }
         User user = userService.findAuthorizedUser();
         if (user == null) {
-            log.error("User is non found");
+            log.error("User is not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         CsvMapper csvMapper = new CsvMapper(ruleService, user, ROOM_TYPE);

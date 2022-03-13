@@ -48,7 +48,7 @@ public class RuleRestControllerV1 {
     public ResponseEntity<List<RuleDto>> getRuleByParamName(@RequestBody RuleDto ruleDto) {
         User user = userService.findAuthorizedUser();
         if (user == null) {
-            log.error("User is non found");
+            log.error("User is not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         List<Rule> rules = ruleService.findByParamNameAndOrganization(ruleDto.getParamName(), user.getOrganization().getName());
