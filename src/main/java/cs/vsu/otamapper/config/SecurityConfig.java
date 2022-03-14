@@ -21,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String ORGANIZATION_ENDPOINT = "/api/v1/organization";
     private static final String USER_ENDPOINT = "/api/v1/user";
     private static final String RULE_ENDPOINT = "/api/v1/rule";
+    private static final String OTA_DICTIONARY_ENDPOINT = "/api/v1/dictionary";
     private static final String MAP_ENDPOINT = "/api/v1/map";
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -48,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ORGANIZATION_ENDPOINT).hasAnyRole()
                 .antMatchers(USER_ENDPOINT).hasAnyRole()
                 .antMatchers(RULE_ENDPOINT).hasAnyRole()
+                .antMatchers(OTA_DICTIONARY_ENDPOINT).hasAnyRole()
                 .antMatchers(MAP_ENDPOINT).hasAnyRole()
                 .anyRequest().authenticated()
                 .and()

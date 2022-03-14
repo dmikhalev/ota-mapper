@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface RuleRepository extends JpaRepository<Rule, Long> {
 
-    @Query(value = "SELECT r FROM Rule r WHERE r.organization.name=:organization AND r.paramName=:paramName")
-    List<Rule> findByParamNameAndOrganization(String paramName, String organization);
+    List<Rule> findByParamNameAndOrganization_Name(String paramName, String organizationName);
 
-    @Query(value = "SELECT r FROM Rule r WHERE r.organization.name=:organization AND r.name=:name")
-    List<Rule> findByNameAndOrganization(String name, String organization);
+    List<Rule> findByNameAndOrganization_Name(String name, String organizationName);
+
+    List<Rule> findByOrganization_Name(String organizationName);
 }

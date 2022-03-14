@@ -5,6 +5,9 @@ import cs.vsu.otamapper.repository.RuleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class RuleService {
@@ -23,14 +26,22 @@ public class RuleService {
         if (paramName == null || organization == null) {
             return null;
         }
-        return ruleRepository.findByParamNameAndOrganization(paramName, organization);
+        return ruleRepository.findByParamNameAndOrganization_Name(paramName, organization);
     }
 
     public List<Rule> findByNameAndOrganization(String name, String organization) {
         if (name == null || organization == null) {
             return null;
         }
-        return ruleRepository.findByNameAndOrganization(name, organization);
+        return ruleRepository.findByNameAndOrganization_Name(name, organization);
+    }
+
+    public Map<Long, Rule> findByOrganization(String organization) {
+        if (organization == null) {
+            return null;
+        }
+        List<Rule> rules = ruleRepository.findByOrganization_Name(organization);
+        return rules.stream().collect(Collectors.toMap(Rule::getId, Function.identity()));
     }
 
     public Rule createOrUpdate(Rule rule) {

@@ -29,4 +29,12 @@ public class OTAParameter {
 
     public OTAParameter() {
     }
+
+    public OTAParameter(Long id, String value, String additionalDetails, Rule rule, OTADictionary otaDictionary) {
+        this.id = id;
+        this.value = value;
+        this.additionalDetails = additionalDetails;
+        this.rule = rule;
+        this.otaDictionary = otaDictionary;
+    }
 }
