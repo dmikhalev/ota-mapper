@@ -14,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
     @Column(name = "password", nullable = false)
@@ -23,10 +23,10 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "phone")
+    @Column(name = "phone", unique = true)
     private String phone;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @ManyToOne()
