@@ -28,6 +28,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> findAllByOrganization(long organizationId) {
+        return userRepository.findAllByOrganization_Id(organizationId);
+    }
+
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }

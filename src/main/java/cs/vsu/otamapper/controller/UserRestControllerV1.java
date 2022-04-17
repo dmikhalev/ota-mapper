@@ -32,7 +32,7 @@ public class UserRestControllerV1 {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping(value = "/user")
+    @GetMapping(value = "/admin/user")
     public ResponseEntity<UserDto> getUserById(@RequestBody IdDto id) {
         User user = userService.findById(id.getId());
         if (user == null) {
@@ -43,9 +43,14 @@ public class UserRestControllerV1 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/all")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<User> users = userService.findAll();
+    @GetMapping(value = "/admin/user/all")
+    public ResponseEntity<List<UserDto>> getAllUsersOfOrganization() {
+        User user = userService.findAuthorizedUser();
+        if (user == null) {
+            log.error("User is not found");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<User> users = userService.findAllByOrganization(user.getOrganization().getId());
         List<UserDto> result = users.stream()
                 .map(UserDto::fromUser)
                 .collect(Collectors.toList());
