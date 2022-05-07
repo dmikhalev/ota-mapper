@@ -1,6 +1,5 @@
 package cs.vsu.otamapper.controller;
 
-import cs.vsu.otamapper.dto.IdDto;
 import cs.vsu.otamapper.dto.OrganizationDto;
 import cs.vsu.otamapper.entity.Organization;
 import cs.vsu.otamapper.entity.User;
@@ -27,8 +26,8 @@ public class OrganizationRestControllerV1 {
     }
 
     @GetMapping(value = "/organization")
-    public ResponseEntity<OrganizationDto> getOrganizationById(@RequestBody IdDto id) {
-        Organization organization = organizationService.findById(id.getId());
+    public ResponseEntity<OrganizationDto> getOrganizationById(@RequestBody Long id) {
+        Organization organization = organizationService.findById(id);
         if (organization == null) {
             log.error("Organization is not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -55,8 +54,10 @@ public class OrganizationRestControllerV1 {
         }
     }
 
-    @DeleteMapping(value = "/admin/organization")
-    public void deleteOrganization(@RequestBody IdDto id) {
-        organizationService.delete(id.getId());
+    @PostMapping(value = "/admin/organization/delete")
+    public void deleteOrganization(@RequestBody Long id) {
+        if (id != null) {
+            organizationService.delete(id);
+        }
     }
 }

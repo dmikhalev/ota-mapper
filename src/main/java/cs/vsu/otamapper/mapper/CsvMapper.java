@@ -3,6 +3,7 @@ package cs.vsu.otamapper.mapper;
 import cs.vsu.otamapper.entity.Rule;
 import cs.vsu.otamapper.entity.User;
 import cs.vsu.otamapper.service.RuleService;
+import cs.vsu.otamapper.utils.StringUtils;
 
 import java.util.*;
 
@@ -36,6 +37,7 @@ public class CsvMapper implements OTAMapper {
         for (int i = 1; i < data.size(); i++) {
             String row = data.get(i);
             String value = row.split(CSV_SEPARATOR)[columnIndex];
+            value = StringUtils.unescape(value);
             if (valueToRulesCache.get(value) != null) {
                 MappedParameter mp = new MappedParameter(value, row, valueToRulesCache.get(value));
                 mappedParameters.add(mp);

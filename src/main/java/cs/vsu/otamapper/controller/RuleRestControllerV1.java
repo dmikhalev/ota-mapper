@@ -1,6 +1,5 @@
 package cs.vsu.otamapper.controller;
 
-import cs.vsu.otamapper.dto.IdDto;
 import cs.vsu.otamapper.dto.RuleDto;
 import cs.vsu.otamapper.entity.Rule;
 import cs.vsu.otamapper.entity.User;
@@ -29,8 +28,8 @@ public class RuleRestControllerV1 {
     }
 
     @GetMapping(value = "/rule")
-    public ResponseEntity<RuleDto> getRuleById(@RequestBody IdDto id) {
-        Rule rule = ruleService.findById(id.getId());
+    public ResponseEntity<RuleDto> getRuleById(@RequestBody Long id) {
+        Rule rule = ruleService.findById(id);
         if (rule == null) {
             log.error("Rule is not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -44,14 +43,14 @@ public class RuleRestControllerV1 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/rules_of_param")
-    public ResponseEntity<List<RuleDto>> getRuleByParamName(@RequestBody RuleDto ruleDto) {
+    @GetMapping(value = "/rules_of_param/{param_name}")
+    public ResponseEntity<List<RuleDto>> getRuleByParamName(@PathVariable String param_name) {
         User user = userService.findAuthorizedUser();
         if (user == null) {
             log.error("User is not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        List<Rule> rules = ruleService.findByParamNameAndOrganization(ruleDto.getParamName(), user.getOrganization().getName());
+        List<Rule> rules = ruleService.findByParamNameAndOrganization(param_name, user.getOrganization().getName());
         if (rules == null) {
             log.error("Rules are not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -78,8 +77,10 @@ public class RuleRestControllerV1 {
         ruleService.createOrUpdate(rule);
     }
 
-    @DeleteMapping(value = "/rule")
-    public void deleteOrganization(@RequestBody IdDto id) {
-        userService.delete(id.getId());
+    @PostMapping(value = "/rule/delete")
+    public void deleteOrganization(@RequestBody Long id) {
+        if (id != null) {
+            userService.delete(id);
+        }
     }
 }

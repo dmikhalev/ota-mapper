@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class RoomTypeMapperRestControllerV1 {
     }
 
     @PostMapping(value = "/map/room_type")
-    public ResponseEntity<List<MappedParameterDto>> mapRoomType(@RequestBody CsvDataDto data) {
+    public ResponseEntity<List<MappedParameterDto>> mapRoomType(@RequestBody String[] data) {
         if (data == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -46,7 +47,7 @@ public class RoomTypeMapperRestControllerV1 {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         CsvMapper csvMapper = new CsvMapper(ruleService, user, ROOM_TYPE);
-        List<MappedParameter> mappedParameters = csvMapper.map(data.getData());
+        List<MappedParameter> mappedParameters = csvMapper.map(Arrays.asList(data));
         List<MappedParameterDto> result = mappedParameters
                 .stream()
                 .map(MappedParameterDto::fromMappedParameter)

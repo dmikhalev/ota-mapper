@@ -1,6 +1,5 @@
 package cs.vsu.otamapper.controller;
 
-import cs.vsu.otamapper.dto.IdDto;
 import cs.vsu.otamapper.dto.UserDto;
 import cs.vsu.otamapper.entity.Role;
 import cs.vsu.otamapper.entity.User;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +33,8 @@ public class UserRestControllerV1 {
     }
 
     @GetMapping(value = "/admin/user")
-    public ResponseEntity<UserDto> getUserById(@RequestBody IdDto id) {
-        User user = userService.findById(id.getId());
+    public ResponseEntity<UserDto> getUserById(@RequestBody Long id) {
+        User user = userService.findById(id);
         if (user == null) {
             log.error("User is not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -52,6 +52,7 @@ public class UserRestControllerV1 {
         }
         List<User> users = userService.findAllByOrganization(user.getOrganization().getId());
         List<UserDto> result = users.stream()
+                .sorted(Comparator.comparingLong(User::getId))
                 .map(UserDto::fromUser)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -63,7 +64,7 @@ public class UserRestControllerV1 {
             return;
         }
         User user;
-        if (userDto.getId() != null) {
+        if (userDto.getId() != null && userDto.getId() > 0) {
             user = userService.findById(userDto.getId());
             user.setName(userDto.getName());
             user.setUsername(userDto.getUsername());
@@ -85,8 +86,10 @@ public class UserRestControllerV1 {
         userService.createOrUpdate(user);
     }
 
-    @DeleteMapping(value = "/admin/user")
-    public void deleteUser(@RequestBody IdDto id) {
-        userService.delete(id.getId());
+    @PostMapping(value = "/admin/user/delete")
+    public void deleteUser(@RequestBody Long id) {
+        if (id != null) {
+            userService.delete(id);
+        }
     }
 }

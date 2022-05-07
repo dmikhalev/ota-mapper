@@ -22,19 +22,27 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        Role role = roleRepository.findByName("ROLE_ADMIN").orElse(null);
+        if (role == null) {
+            role = new Role();
+            role.setName("ROLE_ADMIN");
+            roleRepository.save(role);
+        }
+
+        role = roleRepository.findByName("ROLE_USER").orElse(null);
+        if (role == null) {
+            role = new Role();
+            role.setName("ROLE_USER");
+            roleRepository.save(role);
+        }
+
         User admin = userRepository.findByUsername("admin").orElse(null);
         if (admin == null) {
-            Role role = roleRepository.findByName("ROLE_ADMIN").orElse(null);
-            if (role == null) {
-                role = new Role();
-                role.setId(1L);
-                role.setName("ROLE_ADMIN");
-                roleRepository.save(role);
-            }
             admin = new User();
             admin.setUsername("admin");
             admin.setPassword(passwordEncoder.encode("admin"));
-            admin.setRole(role);
+            Role adminRole = roleRepository.findByName("ROLE_ADMIN").orElse(null);
+            admin.setRole(adminRole);
             admin.setName("admin");
             userRepository.save(admin);
         }
