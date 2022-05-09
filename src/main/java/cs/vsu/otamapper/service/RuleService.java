@@ -1,6 +1,8 @@
 package cs.vsu.otamapper.service;
 
 import cs.vsu.otamapper.entity.Rule;
+import cs.vsu.otamapper.parser.Parser;
+import cs.vsu.otamapper.parser.RegExp;
 import cs.vsu.otamapper.repository.RuleRepository;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +56,10 @@ public class RuleService {
 
     public void delete(Long id) {
         ruleRepository.deleteById(id);
+    }
+
+    public boolean validateRegExp(String regExpStr) {
+        RegExp regExp = Parser.parseRegExp(regExpStr);
+        return regExp != null;
     }
 }

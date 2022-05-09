@@ -1,5 +1,6 @@
 package cs.vsu.otamapper.controller;
 
+import cs.vsu.otamapper.dto.RegExpDto;
 import cs.vsu.otamapper.dto.RuleDto;
 import cs.vsu.otamapper.entity.Rule;
 import cs.vsu.otamapper.entity.User;
@@ -57,7 +58,8 @@ public class RuleRestControllerV1 {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         List<RuleDto> ruleDtos = rules.stream()
-                .sorted(Comparator.comparing(Rule::getParamName))
+                .sorted(Comparator.comparing(Rule::getCode)
+                        .thenComparing(Rule::getPriority))
                 .map(RuleDto::fromRule)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(ruleDtos, HttpStatus.OK);
@@ -81,7 +83,7 @@ public class RuleRestControllerV1 {
         return new ResponseEntity<>(ruleDtos, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/rule")
+    @PostMapping(value = "/rule/create_or_update")
     public void createOrUpdateRule(@RequestBody RuleDto ruleDto) {
         if (ruleDto == null) {
             return;
@@ -93,14 +95,26 @@ public class RuleRestControllerV1 {
         User user = userService.findAuthorizedUser();
         if (user != null) {
             rule.setUser(user);
+            rule.setOrganization(user.getOrganization());
         }
         ruleService.createOrUpdate(rule);
     }
 
+    @PostMapping(value = "/rule/validate")
+    public ResponseEntity<Boolean> validateRegExp(@RequestBody RegExpDto regExpDto) {
+        if (regExpDto == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        String regExp = regExpDto.getRegExp();
+        Boolean result = ruleService.validateRegExp(regExp);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
     @PostMapping(value = "/rule/delete")
-    public void deleteOrganization(@RequestBody Long id) {
+    public void deleteRule(@RequestBody Long id) {
         if (id != null) {
-            userService.delete(id);
+            ruleService.delete(id);
         }
     }
 }
