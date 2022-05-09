@@ -35,9 +35,12 @@ public class OTADictionaryDto {
     }
 
     public static OTADictionaryDto fromOTADictionary(OTADictionary p) {
-        List<OTAParameterDto> parameters = p.getOtaParameters().stream()
-                .map(OTAParameterDto::fromOTAParameter)
-                .collect(Collectors.toList());
+        List<OTAParameterDto> parameters = null;
+        if (p.getOtaParameters() != null) {
+            parameters = p.getOtaParameters().stream()
+                    .map(OTAParameterDto::fromOTAParameter)
+                    .collect(Collectors.toList());
+        }
         return new OTADictionaryDto(p.getId(), p.getName(), parameters);
     }
 }

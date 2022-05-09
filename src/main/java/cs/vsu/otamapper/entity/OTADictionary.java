@@ -33,4 +33,9 @@ public class OTADictionary {
         this.name = name;
         this.user = user;
     }
+
+    public OTADictionary(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

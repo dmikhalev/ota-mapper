@@ -1,9 +1,11 @@
 package cs.vsu.otamapper.service;
 
+import cs.vsu.otamapper.entity.OTADictionary;
 import cs.vsu.otamapper.entity.OTAParameter;
 import cs.vsu.otamapper.repository.OTAParameterRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -25,5 +27,10 @@ public class OTAParameterService {
 
     public void delete(Long id) {
         parameterRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAllByDictionaryId(OTADictionary otaDictionary) {
+        parameterRepository.deleteAllByOtaDictionary(otaDictionary);
     }
 }
