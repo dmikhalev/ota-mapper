@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,25 @@ public class RuleRestControllerV1 {
         }
         RuleDto result = RuleDto.fromRule(rule);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/rules")
+    public ResponseEntity<List<RuleDto>> getAllRules() {
+        User user = userService.findAuthorizedUser();
+        if (user == null) {
+            log.error("User is not found");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<Rule> rules = ruleService.findAllByOrganization(user.getOrganization().getId());
+        if (rules == null) {
+            log.error("Rules are not found");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<RuleDto> ruleDtos = rules.stream()
+                .sorted(Comparator.comparing(Rule::getParamName))
+                .map(RuleDto::fromRule)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(ruleDtos, HttpStatus.OK);
     }
 
     @GetMapping(value = "/rules_of_param/{param_name}")

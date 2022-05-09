@@ -29,6 +29,10 @@ public class RuleService {
         return ruleRepository.findByParamNameAndOrganization_Name(paramName, organization);
     }
 
+    public List<Rule> findAllByOrganization(long organizationId) {
+        return ruleRepository.findByOrganization_Id(organizationId);
+    }
+
     public List<Rule> findByNameAndOrganization(String name, String organization) {
         if (name == null || organization == null) {
             return null;

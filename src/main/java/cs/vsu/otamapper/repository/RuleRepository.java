@@ -12,4 +12,6 @@ public interface RuleRepository extends JpaRepository<Rule, Long> {
     List<Rule> findByNameAndOrganization_Name(String name, String organizationName);
 
     List<Rule> findByOrganization_Name(String organizationName);
+
+    List<Rule> findByOrganization_Id(long organizationId);
 }
