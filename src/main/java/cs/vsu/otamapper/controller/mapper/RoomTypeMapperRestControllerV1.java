@@ -1,6 +1,5 @@
 package cs.vsu.otamapper.controller.mapper;
 
-import cs.vsu.otamapper.dto.CsvDataDto;
 import cs.vsu.otamapper.dto.MappedParameterDto;
 import cs.vsu.otamapper.entity.User;
 import cs.vsu.otamapper.mapper.CsvMapper;
