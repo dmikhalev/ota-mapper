@@ -21,7 +21,7 @@ public class OTADictionary {
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
-    @OneToMany(mappedBy = "otaDictionary")
+    @OneToMany(mappedBy = "otaDictionary", fetch = FetchType.LAZY)
     private List<OTAParameter> otaParameters;
 
     public OTADictionary() {

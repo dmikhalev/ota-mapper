@@ -84,9 +84,9 @@ public class RuleRestControllerV1 {
     }
 
     @PostMapping(value = "/rule/create_or_update")
-    public void createOrUpdateRule(@RequestBody RuleDto ruleDto) {
+    public ResponseEntity<RuleDto> createOrUpdateRule(@RequestBody RuleDto ruleDto) {
         if (ruleDto == null) {
-            return;
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         Rule rule = ruleDto.toRule();
         if (ruleDto.getId() != null) {
@@ -97,7 +97,8 @@ public class RuleRestControllerV1 {
             rule.setUser(user);
             rule.setOrganization(user.getOrganization());
         }
-        ruleService.createOrUpdate(rule);
+        RuleDto result = RuleDto.fromRule(ruleService.createOrUpdate(rule));
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(value = "/rule/validate")

@@ -37,7 +37,7 @@ public class User {
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
-    @OneToMany(mappedBy = "organization")
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     private List<Rule> rules;
 
     public User() {

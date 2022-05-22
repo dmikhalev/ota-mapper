@@ -1,12 +1,13 @@
 package cs.vsu.otamapper.controller;
 
 import cs.vsu.otamapper.dto.UserDto;
+import cs.vsu.otamapper.entity.Organization;
 import cs.vsu.otamapper.entity.Role;
 import cs.vsu.otamapper.entity.User;
+import cs.vsu.otamapper.service.OrganizationService;
 import cs.vsu.otamapper.service.RoleService;
 import cs.vsu.otamapper.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,12 +24,13 @@ public class UserRestControllerV1 {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final OrganizationService organizationService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserRestControllerV1(UserService userService, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
+    public UserRestControllerV1(UserService userService, RoleService roleService, OrganizationService organizationService, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.organizationService = organizationService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -44,14 +46,14 @@ public class UserRestControllerV1 {
     }
 
     @GetMapping(value = "/admin/user/all")
-    public ResponseEntity<List<UserDto>> getAllUsersOfOrganization() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         User user = userService.findAuthorizedUser();
         if (user == null) {
             log.error("User is not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        List<User> users = userService.findAllByOrganization(user.getOrganization().getId());
-        List<UserDto> result = users.stream()
+        List<UserDto> result = userService.findAll()
+                .stream()
                 .sorted(Comparator.comparingLong(User::getId))
                 .map(UserDto::fromUser)
                 .collect(Collectors.toList());
@@ -81,7 +83,8 @@ public class UserRestControllerV1 {
             user = userDto.toUser(passwordEncoder);
             Role role = roleService.findByName("ROLE_USER");
             user.setRole(role);
-            user.setOrganization(admin.getOrganization());
+            Organization organization = organizationService.findByName(userDto.getOrganization());
+            user.setOrganization(organization);
         }
         userService.createOrUpdate(user);
     }

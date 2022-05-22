@@ -15,17 +15,20 @@ public class UserDto {
     private String phone;
     private String email;
     private String role;
+    private String organization;
 
     public UserDto() {
     }
 
-    public UserDto(Long id, String username, String password, String name, String phone, String email) {
+    public UserDto(Long id, String username, String password, String name, String phone, String email, String role, String organization) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.role = role;
+        this.organization = organization;
     }
 
     public User toUser(BCryptPasswordEncoder passwordEncoder) {
@@ -42,6 +45,7 @@ public class UserDto {
     }
 
     public static UserDto fromUser(User u) {
-        return new UserDto(u.getId(), u.getUsername(), null, u.getName(), u.getPhone(), u.getEmail());
+        String role = "ROLE_ADMIN".equals(u.getRole().getName()) ? "admin" : "user";
+        return new UserDto(u.getId(), u.getUsername(), null, u.getName(), u.getPhone(), u.getEmail(), role, u.getOrganization().getName());
     }
 }

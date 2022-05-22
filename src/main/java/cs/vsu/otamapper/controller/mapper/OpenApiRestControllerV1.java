@@ -20,11 +20,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static cs.vsu.otamapper.service.RuleService.ROOM_TYPE_OTA_DICTIONARY_PATH;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/api/v1")
 public class OpenApiRestControllerV1 {
-    private static final String ROOM_TYPE = "RoomType";
+    public static final String ROOM_TYPE = "RoomType";
 
     private final UserService userService;
     private final RuleService ruleService;
@@ -38,7 +40,7 @@ public class OpenApiRestControllerV1 {
     @GetMapping(value = "/openapi/room_type_ota_dictionary")
     public ResponseEntity<List<DictionaryParameterDto>> getRoomTypeOtaDictionary() {
         List<DictionaryParameterDto> result = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/roomTypeOtaDictionary.csv"));) {
+        try (BufferedReader br = new BufferedReader(new FileReader(ROOM_TYPE_OTA_DICTIONARY_PATH))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] nameToCode = line.split(",");

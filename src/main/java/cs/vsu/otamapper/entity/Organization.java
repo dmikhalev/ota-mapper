@@ -17,10 +17,10 @@ public class Organization {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "phone", unique = true, nullable = false)
+    @Column(name = "phone", unique = true)
     private String phone;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "email", unique = true)
     private String email;
 
     @OneToMany(mappedBy = "organization")
@@ -32,7 +32,7 @@ public class Organization {
     public Organization() {
 
     }
-    
+
     public Organization(Long id, String name, String phone, String email) {
         this.id = id;
         this.name = name;
